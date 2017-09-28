@@ -1,0 +1,12 @@
+The tuple-space parallel programming model is a centralized model around the tuple-space server.
+If each node performed as a tuple-server, hosting client-workers, there would need to be a mode to communicate though the nodes.  If each node included a liaison-worker that connected to a neighbor tuple-server monitoring for new worker requests, it could communicate those to the host tuple-server, spreading the request.
+
+To avoid flooding and circular propagation, the liaisons would need to confirm the request was novel to it's host-space before propagating.  To facilitate that transaction, I think a new tuple-operation for writing *unique* tuples to the space would be useful to avoid unintended duplication.  
+
+flag(remote, _, task_tuple).
+push(local, unique, task_tuple).
+
+?- Should there be a unique class for flags in tuple-space?  How would you handle them?
+A- a flag is a read request that is only triggered by new posts, existing posts are ignored?
+    Could the read-request could be permanent to avoid missing a new post while processing the flag?
+    
